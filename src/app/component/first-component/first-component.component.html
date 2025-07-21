@@ -1,0 +1,8 @@
+<div class="welcome-container">
+    <h2>Welcome to Angular 19</h2>
+    <input [(ngModel)]="name" placeholder="Enter your name" />
+    <button (click)="generateGreeting()">Greet me!</button>
+    @if(greeting) {
+        <p>{{ greeting }}</p>
+    }
+</div>

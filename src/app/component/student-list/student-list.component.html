@@ -1,0 +1,21 @@
+<div class="student-container">
+    <h2>Signed on students</h2>
+    <button (click)="toggleFilter()">Show {{ showPresent ? 'absent' : 'present' }} students</button>
+
+    @if(students.length > 0) {
+        <ul>
+            @for(student of students; track student) {
+                @if(student.present === showPresent){
+                    <li>{{ student.firstName + ' ' + student.lastName }}</li>
+                }
+            }
+        </ul>
+    } @else {
+        <p class="empty">No students have signed on.</p>
+    }
+
+    <input [(ngModel)]="firstName" placeholder="Firstname student" />
+    <input [(ngModel)]="lastName" placeholder="Lastname student" />
+    <input [(ngModel)]="email" placeholder="Email student" />
+    <button (click)="addStudent()">Add student</button>
+</div>
