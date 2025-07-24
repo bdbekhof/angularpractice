@@ -10,7 +10,7 @@ import { ContactService } from '../../services/contact.service';
 })
 export class ContactFormComponent {
   constructor(private contactService: ContactService) {}
-  
+
   contactForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]*')]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -18,6 +18,7 @@ export class ContactFormComponent {
     message: new FormControl('', [Validators.required, Validators.minLength(10)]),
   });
 
+  // Getters to make available in other files.
   get name() {
     return this.contactForm.get('name');
   }
@@ -40,5 +41,6 @@ export class ContactFormComponent {
     }
 
     this.contactService.submitForm(this.contactForm.value);
+    this.contactForm.reset();
   }
 }
