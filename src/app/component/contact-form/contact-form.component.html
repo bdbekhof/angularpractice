@@ -1,1 +1,37 @@
-<p>contact-form works!</p>
+<div class="contact-container">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" formControlName="name" placeholder="Name">
+            <div class="error-message" [class.show]="name?.invalid && (name?.touched || name?.dirty)">
+                <p class="error-message-text">Invalid characters have been detected. Only the letters a-z, A-Z and spacebar are allowed.</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" formControlName="email" placeholder="JohnDoe@example.com">
+            <div class="error-message" [class.show]="email?.invalid && (email?.touched || email?.dirty)">
+                <p class="error-message-text">Entered emailaddress is invalid.</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" formControlName="subject" placeholder="Subject">
+            <div class="error-message" [class.show]="subject?.invalid && (subject?.touched || subject?.dirty)">
+                <p class="error-message-text">Invalid characters have been detected. Only the letters a-z, A-Z, spacebar, numbers 0-9 and - are allowed.</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea type="text" id="message" formControlName="message"></textarea>
+            <div class="error-message" [class.show]="message?.invalid && (message?.touched || message?.dirty)">
+                <p class="error-message-text">The message requires at least 10 characters.</p>
+            </div>
+        </div>
+
+        <button type="submit" 
+                [disabled]="contactForm.invalid"
+                [title]="contactForm.invalid ? 'Validate your input' : 'Click to send'"
+            >Send</button>
+    </form>
+</div>

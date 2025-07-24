@@ -1,0 +1,94 @@
+/* Algemene layout van het formulier */
+form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+}
+
+/* Groepering van label + input/textarea */
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Input & textarea velden */
+input,
+textarea {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.3s;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+/* Submit-knop */
+button[type="submit"] {
+  background-color: #1976d2;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:not([disabled])[type="submit"]:hover {
+  background-color: #155a9b;
+}
+
+button[disabled] {
+  background: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  border: none;
+  box-shadow: none;
+  transition: 0.3s ease;
+}
+
+/* Foutmeldingen */
+.error-message {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 1s ease, opacity 1s ease;
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  background-color: #ffbcbc;
+  border: 1px solid #d32f2f;
+  border-radius: 6px;
+}
+
+.error-message.show {
+  max-height: 100px;
+  opacity: 1;
+}
+
+.error-message-text {
+  padding-left: 0.8rem;
+}
+
+/* Optioneel: maak het veld rood bij fout */
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border-color: #d32f2f;
+  background-color: #fff5f5;
+}
