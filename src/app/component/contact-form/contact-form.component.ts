@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ContactService } from '../../services/contact.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -8,6 +9,8 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
   styleUrl: './contact-form.component.css'
 })
 export class ContactFormComponent {
+  constructor(private contactService: ContactService) {}
+  
   contactForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]*')]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -35,5 +38,7 @@ export class ContactFormComponent {
     if(!this.contactForm.valid) {
       return;
     }
+
+    this.contactService.submitForm(this.contactForm.value);
   }
 }
