@@ -4,4 +4,6 @@ export interface Student {
     lastName: string
     email: string
     present: boolean
+    createdAt: string
+    updatedAt: string
 }

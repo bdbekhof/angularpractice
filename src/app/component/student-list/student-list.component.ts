@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Student } from '../../interface/student';
+import { StudentService } from '../../services/student.service';
 
 @Component({
   selector: 'app-student-list',
@@ -9,18 +10,24 @@ import { Student } from '../../interface/student';
   styleUrl: './student-list.component.css'
 })
 export class StudentListComponent {
-  students: Student[] = [
-    {id: 0, firstName: 'Sophie', lastName: 'Aster', email: 'SophieAs92@gmail.com', present: true},
-    {id: 1, firstName: 'Lars', lastName: 'Bellio', email: 'Larsio@gmail.com', present: true},
-    {id: 2, firstName: 'Fashid', lastName: 'Iraqui', email: 'Fasiraqui93@outlook.com', present: true},
-    {id: 3, firstName: 'Daan', lastName: 'Kersen', email: 'Daankers@hotmail.com', present: true},
-    {id: 4, firstName: 'Jasmin', lastName: 'Versams', email: 'JasminVersams@gmail.com', present: false},
-  ];
-
+  students: Student[] = [];
   firstName = '';
   lastName = '';
   email = '';
   showPresent: boolean = true;
+
+  private studentService = inject(StudentService);
+
+  ngOnInit() {
+    this.studentService.getStudents().subscribe({
+      next: (data: Student[]) => {
+        this.students = data;
+      },
+      error: (err) => {
+        console.error('Retrieving students went wrong:', err);
+      }
+    });
+  }
 
   resetForm() {
     this.firstName = '';
@@ -29,20 +36,22 @@ export class StudentListComponent {
   }
 
   addStudent() {
-    if(![this.firstName, this.lastName, this.email].some(v => !v.trim())) {  
-      const id = Math.max(0, ...this.students.map(s => s.id)) + 1;
+    const newStudent: Omit<Student, 'id' | 'createdAt' | 'updatedAt'> = {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      present: true,
+    };
 
-      const newStudent = {
-        id: id,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        email: this.email,
-        present: true,
-      };
-
-      this.students.push(newStudent);
-      this.resetForm();
-    }
+    this.studentService.addStudent(newStudent).subscribe({
+      next: (studentFromApi) => {
+        this.students.push(studentFromApi);
+        this.resetForm();
+      },
+      error: (err) => {
+        console.error("Couldn't add student: ", err);
+      }
+    })
   }
 
   toggleFilter() {
