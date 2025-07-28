@@ -66,7 +66,6 @@ button[disabled] {
 /* Foutmeldingen */
 .error-message {
   overflow: hidden;
-  max-height: 0;
   opacity: 0;
   transition: max-height 1s ease, opacity 1s ease;
   color: #d32f2f;
@@ -77,18 +76,12 @@ button[disabled] {
   border-radius: 6px;
 }
 
-.error-message.show {
-  max-height: 100px;
-  opacity: 1;
-}
-
 .error-message-text {
   padding-left: 0.8rem;
 }
 
 .success-message {
   overflow: hidden;
-  max-height: 0;
   opacity: 0;
   transition: max-height 1s ease, opacity 1s ease;
   color: #3dd600;
@@ -97,11 +90,6 @@ button[disabled] {
   border-radius: 6px;
   margin-bottom: 10px;
   font-size: 0.875rem;
-}
-
-.success-message.show {
-  max-height: 100px;
-  opacity: 1;
 }
 
 .success-message-text {

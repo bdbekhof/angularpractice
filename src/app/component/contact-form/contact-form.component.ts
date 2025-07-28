@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ContactService } from '../../services/contact.service';
+import { fadeInOut } from '../../animations/fade/fade.animation';
 
 @Component({
   selector: 'app-contact-form',
   imports: [ReactiveFormsModule],
   templateUrl: './contact-form.component.html',
-  styleUrl: './contact-form.component.css'
+  styleUrl: './contact-form.component.css',
+  animations: [fadeInOut],
 })
 export class ContactFormComponent {
   constructor(private contactService: ContactService) {}
@@ -18,7 +20,7 @@ export class ContactFormComponent {
     message: new FormControl('', [Validators.required, Validators.minLength(10)]),
   });
 
-  submitStatus: 'idle' | 'success'| 'error' = 'idle';
+  submitStatus: 'visible' | 'hidden' = 'hidden';
 
   // Getters to make available in other files.
   get name() {
@@ -37,6 +39,35 @@ export class ContactFormComponent {
     return this.contactForm.get('message');
   }
 
+  // Error getter
+  getErrorMessage(fieldName: string): string | null {
+    const control = this.contactForm.get(fieldName);
+
+    if(!control || !control.errors) return null;
+
+    if(control.hasError('required')) {
+      return 'This field is required.';
+    }
+
+    switch(fieldName) {
+      case 'name':
+        if(control.hasError('pattern')) return 'Only a-z, A-Z and spaces are allowed.';
+        break;
+      case 'email':
+        if(control.hasError('email')) return 'Please enter a valid email address.';
+        break;
+      case 'subject':
+        if(control.hasError('pattern')) return 'Only letters, numbers, spaces and dashes are allowed.';
+        break;
+      case 'message':
+        if(control.hasError('minlength')) return 'Message must be at least 10 characters.';
+        break;
+    }
+
+    return null;
+  }
+
+
   onSubmit() {
     if(!this.contactForm.valid) {
       return;
@@ -44,9 +75,9 @@ export class ContactFormComponent {
 
     this.contactService.submitForm(this.contactForm.value);
     this.contactForm.reset();
-    this.submitStatus = 'success';
+    this.submitStatus = 'visible';
     setTimeout(() => {
-      this.submitStatus = 'idle';
+      this.submitStatus = 'hidden';
     }, 5000);
   }
 }
