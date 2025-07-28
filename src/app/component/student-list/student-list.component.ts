@@ -57,4 +57,17 @@ export class StudentListComponent {
   toggleFilter() {
     this.showPresent = !this.showPresent;
   }
+
+  togglePresent(student: Student) {
+    const updated = { ...student, present: !student.present };
+
+    this.studentService.updateStudent(updated).subscribe({
+      next: (result) => {
+        student.present = result.present;
+      },
+      error: (err) => {
+        console.error("Couldn't update student:", err);
+      }
+    });
+  }
 }
