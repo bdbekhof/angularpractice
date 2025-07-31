@@ -1,12 +1,14 @@
 <div class="student-container">
-    <h2>Signed on students</h2>
-    <button (click)="toggleFilter()">Show {{ showPresent ? 'absent' : 'present' }} students</button>
+    <div class="titleAndToggle">
+        <h2>Signed on students</h2>
+        <button (click)="toggleFilter()">Show {{ showPresent ? 'absent' : 'present' }} students</button>
+    </div>
 
     @if(students.length > 0) {
         <ul>
             @for(student of students; track student) {
                 @if(student.present === showPresent){
-                    <li>{{ student.firstName + ' ' + student.lastName }}</li>
+                    <li>{{ student.firstName + ' ' + student.lastName }} <button (click)="openStudentModal(student)">Edit</button></li>
                 }
             }
         </ul>
@@ -14,8 +16,57 @@
         <p class="empty">No students have signed on.</p>
     }
 
-    <input [(ngModel)]="firstName" placeholder="Firstname student" />
-    <input [(ngModel)]="lastName" placeholder="Lastname student" />
-    <input [(ngModel)]="email" placeholder="Email student" />
-    <button (click)="addStudent()">Add student</button>
+    @if(isModalOpen) {
+        @if(selectedStudent) {
+            <div class="modal-backdrop"></div>
+            <div class="modal-overlay" [@fadeInOut]="isModalOpen">
+                <div class="modal-content">
+                    <button class="modal-close-button" (click)="closeModal()">✕</button>
+                    <form [formGroup]="updateStudentForm" (ngSubmit)="updateStudent()">
+                        <label for="firstName">Firstname</label>
+                        <input type="text" formControlName="firstName" name="firstName" />
+                        <label for="lastName">Lastname</label>
+                        <input type="text" formControlName="lastName" name="lastName">
+                        <label for="email">Email address</label>
+                        <input type="email" formControlName="email" name="email">
+                        <button type="submit" [disabled]="updateStudentForm.invalid">Update</button>
+                        <button type="submit" (click)="deleteStudent()">Delete</button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="addStudentFields">
+        <form [formGroup]="addStudentForm" (ngSubmit)="addStudent()">
+            <div class="form-group">
+                <label for="firstName">Firstname:</label>
+                <div class="input-container">
+                    <input formControlName="firstName" name="firstName" placeholder="Firstname student" />
+                    <div class="error-message" [@fadeInOut]="addStudentForm.get('firstName')?.invalid && (addStudentForm.get('firstName')?.touched || addStudentForm.get('firstName')?.dirty) ? 'visible' : 'hidden'">
+                        <p class="error-message-text">{{ getErrorMessage('firstName') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Lastname:</label>
+                <div class="input-container">
+                    <input formControlName="lastName" name="lastName" placeholder="Lastname student" />
+                    <div class="error-message" [@fadeInOut]="addStudentForm.get('lastName')?.invalid && (addStudentForm.get('lastName')?.touched || addStudentForm.get('lastName')?.dirty) ? 'visible' : 'hidden'">
+                        <p class="error-message-text">{{ getErrorMessage('lastName') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <div class="input-container">
+                    <input formControlName="email" name="email" placeholder="Email student" />
+                    <div class="error-message" [@fadeInOut]="addStudentForm.get('email')?.invalid && (addStudentForm.get('email')?.touched || addStudentForm.get('email')?.dirty) ? 'visible' : 'hidden'">
+                        <p class="error-message-text">{{ getErrorMessage('email') }}</p>
+                    </div>
+                </div>
+            </div>
+            <button [disabled]="addStudentForm.invalid">Add student</button>
+        </form>
+    </div>
 </div>
