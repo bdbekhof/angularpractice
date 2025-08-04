@@ -4,5 +4,9 @@
     <a routerLink="/student-list">Student list</a>
     <a routerLink="/color-change">Colour change</a>
     <a routerLink="/contact-form">Contact</a>
-    <a routerLink="/login">Login</a>
+    @if(authService.isLoggedIn) {
+        <button (click)="logout()">Logout</button>
+    } @else {
+        <a [routerLink]="['/login']">Login</a>
+    }
 </div>

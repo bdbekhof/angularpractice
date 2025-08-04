@@ -34,7 +34,11 @@ export class LoginComponent {
     const { email, password } = this.loginForm.value;
 
     this.http.get<User[]>(this.apiUrl).pipe(
-      map(users => users.find(user => user.email === email && user.password === password))
+      map(users => users.find(
+        user => 
+          user.email.toLowerCase().trim() === email?.toLowerCase().trim() && 
+          user.password === password
+      ))
     ).subscribe({
       next: (matchedUser) => {
         if(matchedUser) {
