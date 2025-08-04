@@ -8,11 +8,18 @@ import { LoginComponent } from './component/login/login.component';
 import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
-    { path: '', component: FirstComponentComponent },
-    { path: 'introduction', component: IntroductionComponent },
-    { path: 'color-change', component: ColorChangeComponent },
-    { path: 'student-list', canActivate: [authGuard], loadComponent: () => import('./component/student-list/student-list.component').then(m => m.StudentListComponent) },
-    { path: 'contact-form', component: ContactFormComponent},
-    { path: 'login', component: LoginComponent },
-    { path: 'register', loadComponent: () => import('./component/register/register.component').then(m => m.RegisterComponent) },
+    { path: '', component: FirstComponentComponent, data: { animation: 'HomePage'} },
+    { path: 'introduction', component: IntroductionComponent, data: { animation: 'IntroductionPage'} },
+    { path: 'color-change', component: ColorChangeComponent, data: { animation: 'ColorChangePage'} },
+    { path: 'student-list', 
+        canActivate: [authGuard], 
+        loadComponent: () => import('./component/student-list/student-list.component').then(m => m.StudentListComponent), 
+        data: { animation: 'StudentListPage'} 
+    },
+    { path: 'contact-form', component: ContactFormComponent, data: { animation: 'ContactPage'} },
+    { path: 'login', component: LoginComponent, data: { animation: 'LogInPage'} },
+    { path: 'register', 
+        loadComponent: () => import('./component/register/register.component').then(m => m.RegisterComponent), 
+        data: { animation: 'RegisterPage'} 
+    },
 ];
